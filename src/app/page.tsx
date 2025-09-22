@@ -1,6 +1,9 @@
+import SlideShow from "./Content/SlideShow";
 
 export default function Home() {
   return (
-    <div></div>
+    <div>
+      <SlideShow />
+    </div>
   );
 }
