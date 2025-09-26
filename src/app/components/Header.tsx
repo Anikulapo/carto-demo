@@ -213,7 +213,7 @@ const Header = () => {
           <div className="space-y-4">
             {mobileMenuApps.map((app, index) => (
               <div
-                key={app.title}
+                key={index}
                 className="flex items-center justify-between"
               >
                 <div className="flex items-center gap-3">
