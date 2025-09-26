@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 export type ThemeMode = "light" | "dark";
 
@@ -11,6 +13,13 @@ const getInitialTheme = (): ThemeMode => {
     const saved = localStorage.getItem("theme");
     if (saved === "light" || saved === "dark") {
       return saved;
+    }
+    // Check browser theme preference
+    if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      return "dark";
     }
   }
   return "light"; // default

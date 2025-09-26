@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 import Image from "next/image";
 
 const Generate = () => {
   const [showAll, setShowAll] = useState(false);
+  const theme = useSelector((state:RootState)=> state.theme.mode)
 
   const generateItems = [
     {
@@ -39,8 +42,8 @@ const Generate = () => {
       icon: "⚡",
       iconBg: "bg-blue-400",
       col: "#71ab56",
-        col2: "#71ab59",
-        img: "/images/write-pencil-compose-document-sheet-svgrepo-com.svg",
+      col2: "#71ab59",
+      img: "/images/write-pencil-compose-document-sheet-svgrepo-com.svg",
     },
     {
       id: 4,
@@ -51,8 +54,8 @@ const Generate = () => {
       icon: "✨",
       iconBg: "bg-gray-700",
       col: "#71ab56",
-        col2: "#71ab59",
-        img: "/images/magicpen.svg",
+      col2: "#71ab59",
+      img: "/images/magicpen.svg",
     },
     {
       id: 5,
@@ -63,8 +66,8 @@ const Generate = () => {
       icon: "✏️",
       iconBg: "bg-purple-600",
       col: "#3e2062",
-        col2: "#977fba",
-        img: "/images/compass-svgrepo-com.svg",
+      col2: "#977fba",
+      img: "/images/compass-svgrepo-com.svg",
     },
     {
       id: 6,
@@ -75,8 +78,8 @@ const Generate = () => {
       icon: "🎤",
       iconBg: "bg-green-600",
       col: "#284e42",
-        col2: "#98b394",
-        img: "/images/mic.svg"
+      col2: "#98b394",
+      img: "/images/mic.svg",
     },
     {
       id: 7,
@@ -87,7 +90,7 @@ const Generate = () => {
       icon: "🕺",
       iconBg: "bg-gray-800",
       col: "#71ab56",
-        col2: "#71ab59",
+      col2: "#71ab59",
       img: "/images/person.svg",
     },
     {
@@ -98,7 +101,7 @@ const Generate = () => {
       icon: "🧠",
       iconBg: "bg-pink-500",
       col: "#71ab56",
-        col2: "#71ab59",
+      col2: "#71ab59",
       img: "/images/train.svg",
     },
   ];
@@ -110,13 +113,15 @@ const Generate = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-semibold text-white    ">Generate</h2>
+        <h2 className="text-xl sm:text-2xl font-semibold text-white">
+          Generate
+        </h2>
         <button
           onClick={toggleShowAll}
-          className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors"
+          className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors text-sm sm:text-base"
         >
           {showAll ? (
             <>
@@ -133,60 +138,61 @@ const Generate = () => {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {displayedItems.map((item) => (
           <div
             key={item.id}
-            className="group relative rounded-lg p-4  cursor-pointer border border-gray-200 hover:border-gray-300"
+            className="group relative rounded-2xl p-3 sm:p-4 bg-[#111] md:bg-transparent flex flex-col sm:flex-row items-start sm:items-center gap-3"
           >
             {/* Icon */}
             <div
               style={{
                 background: `linear-gradient(to bottom, ${item.col}, ${item.col2})`,
               }}
-              className={`w-12 h-12 rounded-lg flex items-center justify-center mb-3 text-white text-xl`}
+              className="w-12 h-12 md:w-15 md:h-15 rounded-xl flex items-center justify-center shrink-0"
             >
-               <Image
-                          src={item.img}
-                          alt={item.title}
-                          width={20}
-                          height={20}
-                          style={{
-                            filter: "invert(1)" ,
-                          }}
-                        />
+              <Image
+                src={item.img}
+                alt={item.title}
+                width={24}
+                height={24}
+                style={{ filter: "invert(1)" }}
+                className="md:w-8 md:h-8"
+              />
             </div>
 
-            {/* Badge */}
-            {item.badge && (
-              <div
-                className={`absolute top-3 right-3 ${item.badgeColor} text-white text-xs px-2 py-1 rounded-full font-medium`}
-              >
-                {item.badge}
-              </div>
-            )}
-
             {/* Content */}
-            <div className="space-y-2">
-              <h3 className="font-semibold text-gray-900 text-lg">
+            <div className="flex-1 w-full">
+              <h3 className={`font-semibold ${theme == "light" ? "text-black":"text-white" } text-base sm:text-lg flex items-center gap-2`}>
                 {item.title}
+                {item.badge && (
+                  <div
+                    className={`${item.badgeColor} text-white text-[10px] sm:text-xs px-2 py-[2px] rounded-full font-medium`}
+                  >
+                    {item.badge}
+                  </div>
+                )}
               </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-xs  text-gray-400 leading-relaxed">
                 {item.subtitle}
               </p>
             </div>
 
             {/* Open button */}
-            <div className="mt-4 flex justify-end">
-              <button className="text-gray-500 hover:text-gray-700 font-medium text-sm transition-colors">
+            <div className="mt-3 sm:mt-0 sm:ml-auto hidden md:flex justify-end ">
+              <button className="bg-gray-200 rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-black  font-medium text-xs sm:text-sm transition-colors">
+                Open
+              </button>
+            </div>
+
+            <div className="mt-3 sm:mt-0 sm:ml-auto flex justify-end w-full md:hidden">
+              <button className="bg-gray-200 rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-black  font-medium text-xs sm:text-sm transition-colors">
                 Open
               </button>
             </div>
           </div>
         ))}
       </div>
-
-
     </div>
   );
 };

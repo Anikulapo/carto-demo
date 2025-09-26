@@ -43,7 +43,6 @@ const slides = [
     image: "/images/form.mp4",
     bgClass: "bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-500",
   },
-
   {
     id: 4,
     title: "FLUX.1 Krea",
@@ -59,12 +58,18 @@ const slides = [
 
 export default function SlideShow() {
   return (
-    <div className="w-full max-w-[2000px] px-[5%] mx-auto">
+    <div className="w-full max-w-[2000px] px-4 sm:px-[5%] mx-auto pt-[18%] md:pt-[10%]">
       <Swiper
         modules={[Navigation, Pagination]}
-        spaceBetween={20}
+        spaceBetween={16}
+        loop = {true}
         slidesPerView={1.3}
         centeredSlides={false}
+        breakpoints={{
+          640: { slidesPerView: 1.1, spaceBetween: 16 }, 
+          768: { slidesPerView: 1.2, spaceBetween: 20 },
+          1024: { slidesPerView: 1.3, spaceBetween: 24 },
+        }}
         pagination={{
           clickable: true,
           el: ".custom-pagination",
@@ -75,14 +80,14 @@ export default function SlideShow() {
           nextEl: ".custom-next",
           prevEl: ".custom-prev",
         }}
-        className="pb-16"
+        className="pb-12 sm:pb-16"
       >
         {slides.map((slide) => (
           <SwiperSlide key={slide.id}>
             <div
-              className={`relative min-h-[550px] rounded-2xl overflow-hidden text-white flex items-center ${slide.bgClass}`}
+              className={`relative min-h-[400px] sm:min-h-[550px] rounded-2xl overflow-hidden text-white flex items-center ${slide.bgClass}`}
             >
-              {/* Background Layer */}
+              {/* Background */}
               {slide.image.endsWith(".mp4") ? (
                 <video
                   className="absolute inset-0 w-full h-full object-cover"
@@ -101,17 +106,23 @@ export default function SlideShow() {
                   className="absolute inset-0 w-full h-full object-cover"
                 />
               )}
-              <div className="absolute inset-0 bg-black/30" />{" "}
-              {/* dark overlay */}
+              <div className="absolute inset-0 bg-black/40" />
+
               {/* Content */}
-              <div className="relative z-10 max-w-xl px-10">
-                <span className="inline-block mb-3 text-xs font-semibold tracking-wide uppercase bg-white/20 px-3 py-1 rounded-full">
+              <div className="relative z-10 max-w-lg px-6 sm:px-10">
+                <span className="inline-block mb-3 text-[10px] sm:text-xs font-semibold tracking-wide uppercase bg-white/20 px-2 sm:px-3 py-1 rounded-full">
                   {slide.tag}
                 </span>
-                <h2 className="text-4xl font-bold mb-2">{slide.title}</h2>
-                <p className="text-lg font-medium mb-3">{slide.subtitle}</p>
-                <p className="mb-5 text-gray-200">{slide.description}</p>
-                <button className="px-6 py-3 rounded-full bg-white text-gray-900 font-semibold shadow-md hover:bg-gray-200 transition hover:scale-115 duration-700 cursor-pointer">
+                <h2 className="text-2xl sm:text-4xl font-bold mb-2">
+                  {slide.title}
+                </h2>
+                <p className="text-base sm:text-lg font-medium mb-3">
+                  {slide.subtitle}
+                </p>
+                <p className="mb-5 text-sm sm:text-base text-gray-200">
+                  {slide.description}
+                </p>
+                <button className="px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-white text-gray-900 font-semibold shadow-md hover:bg-gray-200 transition hover:scale-105 duration-500 cursor-pointer">
                   {slide.buttonText}
                 </button>
               </div>
@@ -120,15 +131,15 @@ export default function SlideShow() {
         ))}
       </Swiper>
 
-      {/* Controls Section */}
-      <div className="flex items-center justify-between mt-6">
+      {/* Controls */}
+      <div className="flex items-center justify-between mt-4 sm:mt-6">
         <div className="custom-pagination flex gap-2 justify-center grow"></div>
         <div className="flex gap-2">
-          <button className="custom-prev px-2 py-2 bg-[#f8f8f8]  rounded-full">
-            <ChevronLeft className="text-black"/>
+          <button className="custom-prev p-2 sm:px-2 sm:py-2 bg-[#f8f8f8] rounded-full">
+            <ChevronLeft className="text-black w-4 h-4 sm:w-5 sm:h-5" />
           </button>
-          <button className="custom-next px-2 py-2 bg-[#f8f8f8]  rounded-full">
-            <ChevronRight className="text-black" />
+          <button className="custom-next p-2 sm:px-2 sm:py-2 bg-[#f8f8f8] rounded-full">
+            <ChevronRight className="text-black w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
       </div>

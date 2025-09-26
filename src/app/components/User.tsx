@@ -1,95 +1,166 @@
 "use client";
 
-import React, { useState } from 'react';
-import { ChevronDown, Settings, LogOut, Moon, Bell } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { ChevronDown, Settings, LogOut, Moon, Bell, User as UserIcon, Shield, HelpCircle } from 'lucide-react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
+
 
 export default function User() {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const theme = useSelector((state:RootState) => state.theme.mode);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const menuItems = [
+    {
+      icon: <UserIcon className="w-4 h-4" />,
+      title: "Profile Settings",
+      subtitle: "Manage your account"
+    },
+    {
+      icon: <Bell className="w-4 h-4" />,
+      title: "Notifications",
+      subtitle: "Manage notifications"
+    },
+    {
+      icon: <Moon className="w-4 h-4" />,
+      title: "Appearance",
+      subtitle: "Dark mode & themes"
+    },
+    {
+      icon: <Shield className="w-4 h-4" />,
+      title: "Privacy & Security",
+      subtitle: "Account security"
+    }
+  ];
+
   return (
-    <div className="relative ">
+    <div className="relative" ref={dropdownRef}>
       {/* User Profile Button */}
       <button
         onClick={toggleDropdown}
-        className="flex items-center space-x-3 p-2 rounded-lg  transition-colors duration-200 focus:outline-none focus:ring-2 cursor-pointer focus:ring-blue-500"
+        className="flex items-center space-x-1 sm:space-x-2 md:space-x-3 p-1 sm:p-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 cursor-pointer focus:ring-blue-500/50 hover:bg-white/5"
       >
         {/* Profile Picture */}
         <div className="relative">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
-            
+          <div className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-purple-400 via-purple-500 to-pink-400 flex items-center justify-center shadow-lg ring-2 ring-white/10">
+            <span className="text-white font-semibold text-xs sm:text-sm">
+              B
+            </span>
           </div>
-          
+          {/* Online indicator */}
+          <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-400 rounded-full border-2 border-black"></div>
         </div>
         
-        {/* Username */}
-        <span className="text-white font-medium">benevolentnimblebat</span>
+        {/* Username - responsive visibility */}
+        <span className={`hidden sm:inline ${theme == "light" ? "text-black":"text-white" } font-medium text-xs sm:text-sm md:text-base truncate max-w-[100px] md:max-w-[150px]`}>
+          benevolentnimblebat
+        </span>
         
         {/* Dropdown Arrow */}
         <ChevronDown 
-          className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${
-            isOpen ? 'rotate-180' : ''
+          className={`w-3 h-3 sm:w-4 sm:h-4 text-gray-400 transition-all duration-200 ${
+            isOpen ? 'rotate-180 text-gray-200' : ''
           }`} 
         />
       </button>
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+        <div className="absolute top-full left-0 mt-2 w-72 sm:w-80 bg-neutral-900/95 backdrop-blur-xl rounded-xl shadow-2xl border border-neutral-700/50 z-50 overflow-hidden">
           {/* User Info Header */}
-          <div className="p-4 border-b border-gray-100">
+          <div className="p-4 sm:p-5 border-b border-neutral-700/50 bg-gradient-to-r from-purple-500/10 to-pink-500/10">
             <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
-                
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-purple-400 via-purple-500 to-pink-400 flex items-center justify-center shadow-lg">
+                <span className="text-white font-bold text-lg sm:text-xl">
+                  B
+                </span>
               </div>
-              <div>
-                <p className="font-semibold text-gray-900">benevolentnimblebat</p>
-                <p className="text-sm text-gray-500">Online</p>
+              <div className="min-w-0 flex-1">
+                <p className="font-semibold text-white text-sm sm:text-base truncate">
+                  benevolentnimblebat
+                </p>
+                <div className="flex items-center space-x-2 mt-1">
+                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                  <p className="text-xs sm:text-sm text-green-400 font-medium">Online</p>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Menu Items */}
-          {/* <div className="py-2">
-            <button className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-gray-50 transition-colors">
-              <User className="w-4 h-4 text-gray-500" />
-              <span className="text-gray-700">Profile</span>
-            </button>
-            
-            <button className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-gray-50 transition-colors">
-              <Settings className="w-4 h-4 text-gray-500" />
-              <span className="text-gray-700">Settings</span>
-            </button>
-            
-            <button className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-gray-50 transition-colors">
-              <Bell className="w-4 h-4 text-gray-500" />
-              <span className="text-gray-700">Notifications</span>
-            </button>
-            
-            <button className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-gray-50 transition-colors">
-              <Moon className="w-4 h-4 text-gray-500" />
-              <span className="text-gray-700">Dark Mode</span>
-            </button>
-            
-            <hr className="my-2 border-gray-100" />
-            
-            <button className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-gray-50 transition-colors text-red-600">
-              <LogOut className="w-4 h-4" />
-              <span>Sign Out</span>
-            </button>
-          </div> */}
-        </div>
-      )}
+          <div className="py-2">
+            {menuItems.map((item, index) => (
+              <button
+                key={index}
+                className="w-full flex items-center space-x-3 px-4 sm:px-5 py-3 text-left hover:bg-neutral-800/50 transition-colors duration-150 group"
+              >
+                <div className="flex-shrink-0 text-gray-400 group-hover:text-white transition-colors duration-150">
+                  {item.icon}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-white text-sm font-medium group-hover:text-gray-100">
+                    {item.title}
+                  </p>
+                  <p className="text-gray-400 text-xs group-hover:text-gray-300">
+                    {item.subtitle}
+                  </p>
+                </div>
+              </button>
+            ))}
+          </div>
 
-      {/* Backdrop to close dropdown */}
-      {isOpen && (
-        <div 
-          className="fixed inset-0 z-40" 
-          onClick={() => setIsOpen(false)}
-        ></div>
+          {/* Divider */}
+          <div className="border-t border-neutral-700/50 my-1"></div>
+
+          {/* Settings & Help */}
+          <div className="py-1">
+            <button className="w-full flex items-center space-x-3 px-4 sm:px-5 py-3 text-left hover:bg-neutral-800/50 transition-colors duration-150 group">
+              <Settings className="w-4 h-4 text-gray-400 group-hover:text-white transition-colors duration-150" />
+              <div>
+                <p className="text-white text-sm font-medium group-hover:text-gray-100">Settings</p>
+              </div>
+            </button>
+            
+            <button className="w-full flex items-center space-x-3 px-4 sm:px-5 py-3 text-left hover:bg-neutral-800/50 transition-colors duration-150 group">
+              <HelpCircle className="w-4 h-4 text-gray-400 group-hover:text-white transition-colors duration-150" />
+              <div>
+                <p className="text-white text-sm font-medium group-hover:text-gray-100">Help & Support</p>
+              </div>
+            </button>
+          </div>
+
+          {/* Divider */}
+          <div className="border-t border-neutral-700/50 my-1"></div>
+
+          {/* Sign Out */}
+          <div className="py-1">
+            <button className="w-full flex items-center space-x-3 px-4 sm:px-5 py-3 text-left hover:bg-red-500/10 transition-colors duration-150 group">
+              <LogOut className="w-4 h-4 text-gray-400 group-hover:text-red-400 transition-colors duration-150" />
+              <div>
+                <p className="text-gray-300 text-sm font-medium group-hover:text-red-400">Sign Out</p>
+              </div>
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
