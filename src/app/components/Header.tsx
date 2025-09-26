@@ -102,9 +102,9 @@ const Header = () => {
             className="bg-[#f8f8f8] rounded-xl p-2 flex items-center cursor-pointer text-[#4a4a4a]"
           >
             {theme === "light" ? (
-              <Moon className="w-4 h-4 text-[#4a4a4a]" />
+              <Moon className="w-5 h-5 text-[#4a4a4a]" />
             ) : (
-              <Sun className="w-4 h-4  text-[#4a4a4a]" />
+              <Sun className="w-5 h-5  text-[#4a4a4a]" />
             )}
           </button>
 
