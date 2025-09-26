@@ -142,7 +142,7 @@ const Generate = () => {
         {displayedItems.map((item) => (
           <div
             key={item.id}
-            className="group relative rounded-2xl p-3 sm:p-4 bg-[#111] md:bg-transparent flex flex-col sm:flex-row items-start sm:items-center gap-3"
+            className={`group relative rounded-2xl p-3 sm:p-4 ${theme == "light" ? "bg-[#f6f6f6]":"bg-[#111]" }   md:bg-transparent flex flex-col sm:flex-row items-start sm:items-center gap-3`}
           >
             {/* Icon */}
             <div
